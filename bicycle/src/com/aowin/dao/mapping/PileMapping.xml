@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.aowin.dao.PileDao">
+	<insert id="addPile" parameterType="com.aowin.model.Pile">
+		insert into bicycle_pile (pile_id,vender_id,pile_code,station_id,status,install_time,disassembly_time,user_id,operator_time,bicycle_id,remark)
+			values (pi_sequence.nextval,#{vender_id},#{pile_code},#{station_id},#{status},#{install_time},#{disassembly_time},#{user_id},#{operator_time},#{bicycle_id},#{remark})
+			
+	</insert>
+	
+	<update id="updatePile" parameterType="java.util.List">
+		update bicycle_pile 
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="vender_id=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.vender_id}
+				</foreach>
+			</trim>
+			<trim prefix="pile_code=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.pile_code}
+				</foreach>
+			</trim>
+			<trim prefix="station_id=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.station_id}
+				</foreach>
+			</trim>
+			<trim prefix="status=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.status}
+				</foreach>
+			</trim>
+			<trim prefix="install_time=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.install_time}
+				</foreach>
+			</trim>
+			<trim prefix="disassembly_time=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.disassembly_time}
+				</foreach>
+			</trim>
+			<trim prefix="user_id=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.user_id}
+				</foreach>
+			</trim>
+			<trim prefix="operator_time=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.operator_time}
+				</foreach>
+			</trim>
+			<trim prefix="bicycle_id=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.bicycle_id}
+				</foreach>
+			</trim>
+			<trim prefix="remark=case" suffix="end,">
+				<foreach collection="list" item="lt" index="index">
+					when pile_id=#{lt.pile_id} then #{lt.remark}
+				</foreach>
+			</trim>
+		</trim>
+			where pile_id in
+		<foreach collection="list" index="index" item="lt" separator="," open="(" close=")">
+			#{lt.pile_id}
+		</foreach> 
+	</update>
+	
+	<select id="selectPile" parameterType="Integer" resultType="com.aowin.model.Pile">
+		select count(*) count from bicycle_pile where station_id=#{station_id} and status='1'
+	</select>
+	
+
+</mapper>
